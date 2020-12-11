@@ -1,15 +1,21 @@
-var express = require('express')
-var bodyParser = require('body-parser')
+const express = require('express');
+const bodyParser = require('body-parser');
+const shell = require('shelljs');
+const app = express();
  
-var app = express()
- 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+
 app.post("/webhook", (req, res) => {
-  console.log(req.body) // Call your action on the request here
-  res.status(200).end() // Responding is important
+  rebuild(req.body.name);
+  res.status(200).end();
 })
 
+async function rebuild(projectName) {
+  shell.exec("echo rebuild project: " + projectName);
+  shell.cd(`../${projectName}`);
+  shell.exec("git pull origin master");
+  shell.exec("npm install");
+  shell.exec("npm run build");
+}
 
-app.listen(3000)
+app.listen(3000);
