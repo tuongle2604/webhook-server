@@ -6,16 +6,19 @@ const app = express();
 app.use(bodyParser.json());
 
 app.post("/webhook", (req, res) => {
-  rebuild(req.body.name);
+  rebuild(req.body.repository.name);
   res.status(200).end();
 })
 
-async function rebuild(projectName) {
-  shell.exec("echo rebuild project: " + projectName);
-  shell.cd(`../${projectName}`);
-  shell.exec("git pull origin master");
-  shell.exec("npm install");
-  shell.exec("npm run build");
+function rebuild(projectName) {
+  return new Promise((ok, no) => {
+    shell.exec("echo rebuild project: " + projectName);
+    shell.cd(`../${projectName}`);
+    shell.exec("git pull origin master");
+    shell.exec("npm install");
+    shell.exec("npm run build");
+    ok();
+  })
 }
 
 app.listen(3000);
