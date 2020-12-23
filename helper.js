@@ -3,13 +3,13 @@ const chalk = require("chalk");
 
 const getCommands = (projectName) => {
   const commandsMap = {
-    "portfolio-with-nuxtjs": "generate",
-    "vue-with-webpack": "build",
-    "real-world-vuejs": "build",
+    "portfolio-with-nuxtjs": "npm run generate",
+    "vue-with-webpack": "npm run build",
+    "real-world-vuejs": "npm run build",
   };
-  const buidCommand = commandsMap[projectName] || "build";
+  const buidCommand = commandsMap[projectName] || "npm run build";
 
-  return ["git pull origin master", "npm install", `npm run ${buidCommand}`];
+  return ["git pull origin master", "npm install", buidCommand];
 };
 
 const executeCommands = (commands, cb) => {
