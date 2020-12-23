@@ -15,6 +15,7 @@ const getCommands = (projectName) => {
 const executeCommands = (commands, cb) => {
   const execute = () => {
     console.log(chalk.green(`\nExecute command:  ${commands[0]}\n`));
+
     shell.exec(commands.shift(), (code, stdout, stderr) => {
       if (code !== 0) {
         return cb(stderr);
